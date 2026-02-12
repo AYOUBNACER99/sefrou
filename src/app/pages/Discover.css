@@ -1,0 +1,56 @@
+.discover-page {
+  min-height: 100vh;
+}
+
+.discover-hero {
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+  color: var(--color-white);
+  padding: var(--spacing-2xl) 0;
+  text-align: center;
+}
+
+.discover-hero h1 {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.discover-hero p {
+  font-size: 1.25rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.discover-content {
+  padding: var(--spacing-2xl) 0;
+}
+
+.discover-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.attraction-category {
+  display: inline-block;
+  background: var(--color-cream);
+  color: var(--color-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-xs);
+}
+
+@media (max-width: 768px) {
+  .discover-hero h1 {
+    font-size: 2rem;
+  }
+
+  .discover-hero p {
+    font-size: 1rem;
+  }
+
+  .discover-grid {
+    grid-template-columns: 1fr;
+  }
+}

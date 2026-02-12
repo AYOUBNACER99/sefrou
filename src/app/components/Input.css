@@ -1,0 +1,37 @@
+.input-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.input-label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-dark);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.input-required {
+  color: var(--color-deep-red);
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all var(--transition-fast);
+  background: var(--color-white);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(193, 80, 46, 0.1);
+}
+
+.input-textarea {
+  resize: vertical;
+  min-height: 100px;
+}

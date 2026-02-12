@@ -1,0 +1,120 @@
+.navbar {
+  background: var(--color-white);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.navbar-logo:hover {
+  color: var(--color-secondary);
+}
+
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-dark);
+  padding: 0.5rem;
+}
+
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  gap: var(--spacing-md);
+  align-items: center;
+  margin: 0;
+}
+
+.navbar-link {
+  color: var(--color-dark);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem var(--spacing-sm);
+  border-radius: 6px;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.navbar-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: var(--color-primary);
+  transition: width var(--transition-fast);
+}
+
+.navbar-link:hover::after,
+.navbar-link-active::after {
+  width: 80%;
+}
+
+.navbar-link-active {
+  color: var(--color-primary);
+}
+
+.navbar-admin {
+  background: var(--color-secondary);
+  color: var(--color-white) !important;
+}
+
+.navbar-admin::after {
+  display: none;
+}
+
+.navbar-admin:hover {
+  background: #005f71;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .navbar-toggle {
+    display: block;
+  }
+
+  .navbar-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--color-white);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-md);
+    gap: var(--spacing-xs);
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: all var(--transition-normal);
+  }
+
+  .navbar-menu-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .navbar-link {
+    width: 100%;
+    text-align: center;
+  }
+}
