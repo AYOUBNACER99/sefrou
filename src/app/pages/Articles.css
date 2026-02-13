@@ -1,33 +1,90 @@
-.articles-page {
-  min-height: 100vh;
+/* Variables Burgundy Royal (reuse) */
+:root {
+  --color-primary: #5a0f1b;    /* Burgundy */
+  --color-deep-red: #7a1c2a;   /* Dark Burgundy */
+  --color-gold: #d4af37;
+  --color-white: #ffffff;
+  --color-bg: #faf7f8;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-2xl: 4rem;
+  --transition-normal: 0.3s ease;
 }
 
+/* Page */
+.articles-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+/* Hero */
 .articles-hero {
   background: linear-gradient(135deg, var(--color-primary), var(--color-deep-red));
   color: var(--color-white);
   padding: var(--spacing-2xl) 0;
   text-align: center;
+    margin-bottom: 25px;
 }
 
 .articles-hero h1 {
-  font-size: 3rem;
+  font-size: 2.8rem;
   margin-bottom: var(--spacing-sm);
 }
 
 .articles-hero p {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
+  opacity: 0.9;
 }
 
+/* Content */
 .articles-content {
   padding: var(--spacing-2xl) 0;
+    margin-top: 10px;
 }
 
+/* Grid */
 .articles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--spacing-xl);
 }
 
+/* Article Card */
+.article-card {
+  background: var(--color-white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(90, 15, 27, 0.08);
+  transition: transform var(--transition-normal),
+              box-shadow var(--transition-normal);
+  text-align: left;
+}
+
+.article-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(90, 15, 27, 0.15);
+}
+
+.article-card img {
+  width: 100%;
+  display: block;
+}
+
+.article-card h3 {
+  color: var(--color-primary);
+  margin: var(--spacing-md) var(--spacing-md) 0 var(--spacing-md);
+  font-weight: 600;
+}
+
+.article-card p {
+  color: #555;
+  margin: 0 var(--spacing-md) var(--spacing-md) var(--spacing-md);
+  font-size: 0.95rem;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .articles-hero h1 {
     font-size: 2rem;

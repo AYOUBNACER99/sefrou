@@ -63,7 +63,7 @@ export function Discover() {
       <section className="discover-content container">
         <div className="discover-grid">
           {attractions.map(attraction => (
-            <Card key={attraction.id} hover>
+            <Card  key={attraction.id} hover>
               <CardImage src={attraction.image} alt={attraction.title} />
               <CardContent>
                 <span className="attraction-category">{attraction.category}</span>

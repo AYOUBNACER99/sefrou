@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('https://images.unsplash.com/photo-1757163587904-14cdadfda026?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb3JvY2NvJTIwdHJhZGl0aW9uYWwlMjBhcmNoaXRlY3R1cmV8ZW58MXx8fHwxNzY5NTMxMDA0fDA&ixlib=rb-4.1.0&q=80&w=1080');
+  background-image: url('i love sefrou.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -23,7 +23,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(193, 80, 46, 0.8), rgba(0, 121, 145, 0.8));
+  background: linear-gradient(135deg, rgba(253, 138, 104, 0.8), rgba(97, 229, 255, 0.8));
 }
 
 .hero-content {
@@ -78,8 +78,11 @@
   width: 80px;
   height: 80px;
   margin: 0 auto var(--spacing-md);
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  color: var(--color-white);
+background: linear-gradient(135deg, #7a1c2a, #5a0f1b); /* Burgundy Royal Gradient */
+color: #fff; /* نص أبيض واضح */
+border: 2px solid #7a1c2a; /* Optional لإطار أنيق */
+border-radius: 12px;
+transition: all 0.3s ease;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -237,6 +240,7 @@
 
 .section-map {
   margin: 60px auto;
+ 
 }
 
 .map-wrapper {
@@ -245,6 +249,7 @@
   border-radius: 12px;
   overflow: hidden;
   border: 2px solid #ddd;
+
 }
 
 .map {

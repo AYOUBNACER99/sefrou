@@ -11,6 +11,7 @@ import { Gallery } from './pages/Gallery';
 import { Contact } from './pages/Contact';
 import { AdminLogin } from './pages/AdminLogin';
 import { AdminDashboard } from './pages/AdminDashboard';
+import LandmarkCard from './components/cardeinfo';
 import '../styles/main.css';
 
 // إما حذف هذا السطر أو تعديله
@@ -32,6 +33,7 @@ export default function App() {
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/admin" element={<AdminLogin />} />
+                <Route path="/landmark/:id" element={<LandmarkCard />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
             </Routes>
           </main>

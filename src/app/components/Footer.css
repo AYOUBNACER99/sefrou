@@ -1,6 +1,6 @@
 .footer {
-  background: var(--color-dark);
-  color: var(--color-light);
+ background: #5a0f1b; /* حبّ الملوك غني وواضح *//* أخضر داكن أكثر هدوءًا */
+  color: #f3f3f3;      /* نص فاتح هادئ */
   padding: var(--spacing-2xl) 0 var(--spacing-md);
   margin-top: var(--spacing-2xl);
 }
@@ -19,19 +19,19 @@
 }
 
 .footer-title {
-  color: var(--color-accent);
+  color: #f7d55c; /* أصفر أقل حدة من ليموني */
   font-size: 1.5rem;
   margin-bottom: var(--spacing-xs);
 }
 
 .footer-subtitle {
-  color: var(--color-cream);
+  color: #f5f2e6; /* كريم هادئ أكثر من قبل */
   font-size: 1.125rem;
   margin-bottom: var(--spacing-xs);
 }
 
 .footer-description {
-  color: #bdc3c7;
+  color: #cbd4d8; /* نص رمادي فاتح هادئ */
   line-height: 1.6;
 }
 
@@ -43,8 +43,8 @@
 .footer-social-link {
   width: 40px;
   height: 40px;
-  background: var(--color-primary);
-  color: var(--color-white);
+/* أخضر فاتح أكثر هدوء */
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -53,7 +53,7 @@
 }
 
 .footer-social-link:hover {
-  background: var(--color-accent);
+  background: #f7d55c; /* أصفر هادئ عند hover */
   transform: translateY(-2px);
 }
 
@@ -65,13 +65,13 @@
 }
 
 .footer-links a {
-  color: #bdc3c7;
+  color: #cbd4d8; /* نص هادئ */
   text-decoration: none;
   transition: color var(--transition-fast);
 }
 
 .footer-links a:hover {
-  color: var(--color-accent);
+  color: #f7dc7e; /* أصفر هادئ عند hover */
   padding-left: var(--spacing-xs);
 }
 
@@ -86,19 +86,19 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  color: #bdc3c7;
+  color: #cbd4d8;
 }
 
 .footer-contact svg {
-  color: var(--color-primary);
+  color: #e24d32; /* أخضر فاتح هادئ */
   flex-shrink: 0;
 }
 
 .footer-bottom {
   text-align: center;
   padding-top: var(--spacing-lg);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  color: #95a5a6;
+  border-top: 1px solid rgba(247, 213, 92, 0.2); /* خط أصفر هادئ */
+  color: #aab3b7;
 }
 
 @media (max-width: 768px) {

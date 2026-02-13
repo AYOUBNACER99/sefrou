@@ -1,35 +1,85 @@
-.discover-page {
-  min-height: 100vh;
+/* Variables Burgundy Royal reuse */
+:root {
+  --color-primary: #5a0f1b;    /* Burgundy */
+  --color-secondary: #7a1c2a;  /* Dark Burgundy */
+  --color-gold: #d4af37;
+  --color-white: #ffffff;
+  --color-cream: #fdf5e6;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-2xl: 4rem;
+  --transition-normal: 0.3s ease;
 }
 
+/* Page */
+.discover-page {
+  min-height: 70vh;
+  background: #faf7f8;
+}
+
+/* Hero */
 .discover-hero {
   background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
   color: var(--color-white);
   padding: var(--spacing-2xl) 0;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .discover-hero h1 {
-  font-size: 3rem;
+  font-size: 2.8rem;
   margin-bottom: var(--spacing-md);
 }
 
 .discover-hero p {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   max-width: 800px;
   margin: 0 auto;
+  opacity: 0.9;
 }
 
+/* Content */
 .discover-content {
   padding: var(--spacing-2xl) 0;
 }
 
+/* Grid */
 .discover-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--spacing-lg);
 }
 
+/* Card */
+.discover-card {
+  background: var(--color-white);
+  padding: var(--spacing-lg);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(90, 15, 27, 0.08);
+  transition: transform var(--transition-normal),
+              box-shadow var(--transition-normal);
+}
+
+.discover-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(90, 15, 27, 0.15);
+}
+
+.discover-card h3 {
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.discover-card p {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+/* Category */
 .attraction-category {
   display: inline-block;
   background: var(--color-cream);
@@ -41,6 +91,7 @@
   margin-bottom: var(--spacing-xs);
 }
 
+/* Responsive */
 @media (max-width: 768px) {
   .discover-hero h1 {
     font-size: 2rem;

@@ -1,9 +1,10 @@
 import React from 'react';
 import './Card.css';
-
+import { useNavigate } from 'react-router-dom';
 export function Card({ children, hover = false, className = '' }) {
+  const navigate=useNavigate()
   return (
-    <div className={`card${hover ? ' card-hover' : ''} ${className}`}>
+    <div onClick={()=> alert("ok")} className={`card${hover ? ' card-hover' : ''} ${className}`}>
       {children}
     </div>
   );

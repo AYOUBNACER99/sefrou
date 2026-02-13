@@ -1,5 +1,5 @@
 .btn {
-  padding: 0.75rem 1.5rem;
+  padding: 0.4rem 0.5rem;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
@@ -10,6 +10,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  margin: 10px;
 }
 
 .btn:disabled {
@@ -41,9 +42,11 @@
 }
 
 .btn-outline {
-  background-color: transparent;
-  color: var(--color-primary);
-  border: 2px solid var(--color-primary);
+ background: linear-gradient(135deg, #7a1c2a, #5a0f1b); /* Dark Burgundy gradient */
+color: var(--color-white);
+border: 2px solid #7a1c2a;
+border-radius: 12px;
+transition: all 0.3s ease;
 }
 
 .btn-outline:hover:not(:disabled) {
