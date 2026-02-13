@@ -13,6 +13,7 @@ export function Navbar() {
     { path: '/discover', label: 'Discover' },
     { path: '/articles', label: 'Articles' },
     { path: '/gallery', label: 'Gallery' },
+    
     { path: '/contact', label: 'Contact' }
   ];
 
