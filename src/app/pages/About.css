@@ -1,7 +1,9 @@
-/* Variables (Burgundy Royal Light) */
+/* ==========================================
+   1. VARIABLES (Burgundy Royal Light)
+   ========================================== */
 :root {
-  --color-primary: #5a0f1b;   /* Burgundy */
-  --color-secondary: #7a1c2a; /* Burgundy soft */
+  --color-primary: #5a0f1b;
+  --color-secondary: #7a1c2a;
   --color-gold: #d4af37;
   --color-white: #ffffff;
   --color-bg: #faf7f8;
@@ -36,18 +38,12 @@
 
 .about-hero h1 {
   font-size: 2.6rem;
-  margin-bottom: 0.5rem;
   font-weight: 600;
-}
-
-.about-subtitle {
-  font-size: 1.1rem;
-  opacity: 0.9;
 }
 
 /* Content */
 .about-content {
-  padding: var(--spacing-2xl) 0;
+  padding: var(--spacing-2xl) 5%;
 }
 
 .about-grid {
@@ -58,7 +54,6 @@
   margin-bottom: var(--spacing-2xl);
 }
 
-/* Text */
 .about-text {
   font-size: 1.05rem;
   line-height: 1.9;
@@ -74,11 +69,48 @@
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(90, 15, 27, 0.15);
+  position: relative;
+  min-height: 350px;
 }
 
-.about-image img {
+.slider-image {
   width: 100%;
-  display: block;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+/* Arrows */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(90, 15, 27, 0.85);
+  border: none;
+  color: var(--color-white);
+  font-size: 18px;
+  padding: 10px 14px;
+  cursor: pointer;
+  z-index: 20;
+  border-radius: 50%;
+  transition: all var(--transition-normal);
+}
+
+.arrow:hover {
+  background: var(--color-gold);
+  color: var(--color-primary);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.arrow.left {
+  left: 15px;
+}
+
+.arrow.right {
+  right: 15px;
 }
 
 /* Highlights */
@@ -106,7 +138,6 @@
 .highlight-card h3 {
   color: var(--color-primary);
   margin-bottom: 0.5rem;
-  font-weight: 600;
 }
 
 .highlight-card p {
@@ -116,12 +147,14 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .about-hero h1 {
-    font-size: 2rem;
+  .about-grid {
+    display: flex;
+    flex-direction: column;
   }
 
-  .about-grid {
-    grid-template-columns: 1fr;
+  .about-image {
+    width: 100%;
+    max-height: 250px;
   }
 
   .about-text {

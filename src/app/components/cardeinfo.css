@@ -1,0 +1,175 @@
+/* --- 1. Base Styles (All Screens) --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.info-page-wrapper {
+  width: 100%;
+  background-color: #fff5f6;
+  /* Centering logic only applies when there is space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column; /* Stacked by default (Mobile) */
+  background: white;
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(139, 0, 0, 0.1);
+}
+
+.info-image-box {
+  width: 100%;
+  height: 300px; /* Default height for mobile */
+}
+
+.info-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info-content {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+}
+
+.info-category {
+  color: #d2143a;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.info-title {
+  font-size: 1.8rem;
+  color: #2d0a0e;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.info-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  color: #888;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+
+.info-description {
+  line-height: 1.7;
+  color: #444;
+  font-size: 1rem;
+  white-space: pre-line;
+  margin-bottom: 25px;
+}
+
+.back-btn {
+  padding: 12px 25px;
+  background-color: #d2143a;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%; /* Full width on mobile */
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+/* --- 2. Tablet Media Query (768px and up) --- */
+@media (min-width: 768px) {
+  .info-container {
+    flex-direction: row; /* Side-by-side layout */
+    min-height: 60vh;
+  }
+
+  .info-image-box {
+    flex: 1;
+    height: auto; /* Let it match content height */
+  }
+
+  .info-content {
+    flex: 1.2;
+    padding: 40px;
+  }
+
+  .info-title {
+    font-size: 2.2rem;
+  }
+
+  .back-btn {
+    width: fit-content; /* Snap back to normal size */
+  }
+}
+
+/* --- 3. Desktop Media Query (1024px and up) --- */
+@media (min-width: 1024px) {
+  .info-page-wrapper {
+    padding: 60px 20px;
+  }
+
+  .info-content {
+    padding: 60px;
+  }
+
+  .info-title {
+    font-size: 2.8rem;
+  }
+
+  .info-description {
+    font-size: 1.15rem;
+    line-height: 1.9;
+  }
+}
+
+/* --- 4. Extra Small Mobile Fix (Under 480px) --- */
+@media (max-width: 480px) {
+  .info-page-wrapper {
+    display: block; /* Remove flex centering to prevent top-overflow */
+    padding: 0;
+  }
+
+  .info-container {
+    border-radius: 0;
+  }
+
+  .info-image-box {
+    height: 250px;
+  }
+
+  .info-content {
+    padding: 20px;
+  }
+
+  .info-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* --- 5. Landscape Mode Fix --- */
+@media (max-height: 500px) and (orientation: landscape) {
+  .info-page-wrapper {
+    display: block;
+    padding: 10px;
+  }
+  
+  .info-container {
+    flex-direction: row;
+  }
+}

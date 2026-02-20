@@ -5,6 +5,7 @@ import './Gallery.css';
 
 export function Gallery() {
   const { galleryImages } = useApp();
+  console.log(galleryImages)
   const [selectedImage, setSelectedImage] = useState(null);
 
   return (

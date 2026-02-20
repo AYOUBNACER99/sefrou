@@ -13,8 +13,9 @@ export function Navbar() {
     { path: '/discover', label: 'Discover' },
     { path: '/articles', label: 'Articles' },
     { path: '/gallery', label: 'Gallery' },
-    
-    { path: '/contact', label: 'Contact' }
+    { path: '/Places', label: 'Places To Go' },
+    { path: '/Food', label: 'Food' },
+     { path: '/Festival', label: 'Festival' }
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -23,7 +24,7 @@ export function Navbar() {
     <nav className="navbar">
       <div className="container">
         <div className="navbar-content">
-          <Link to="/" className="navbar-logo">
+          <Link to="/" className="navbar-logo" onClick={() => window.scrollTo(0, 0)}>
             Visit Sefrou
           </Link>
 
@@ -41,7 +42,7 @@ export function Navbar() {
                 <Link
                   to={link.path}
                   className={`navbar-link${isActive(link.path) ? ' navbar-link-active' : ''}`}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => {setIsOpen(false);window.scrollTo(0, 0)}}
                 >
                   {link.label}
                 </Link>
@@ -51,7 +52,7 @@ export function Navbar() {
               <Link
                 to="/admin"
                 className="navbar-link navbar-admin"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {setIsOpen(false);window.scrollTo(0, 50)}}
               >
                 Admin
               </Link>

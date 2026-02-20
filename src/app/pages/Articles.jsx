@@ -18,7 +18,7 @@ export function Articles() {
       <section className="articles-content container">
         <div className="articles-grid">
           {articles.map(article => (
-            <Card key={article.id} hover>
+            <Card  info={article.id} key={article.id} hover>
               <CardImage src={article.image} alt={article.title} />
               <CardContent>
                 <div className="article-meta">
@@ -27,7 +27,9 @@ export function Articles() {
                 </div>
                 <CardTitle>{article.title}</CardTitle>
                 <CardDescription>{article.content}</CardDescription>
-              </CardContent>
+                <CardDescription>{article.description.substring(0, 100)}</CardDescription>
+
+                </CardContent>
             </Card>
           ))}
         </div>

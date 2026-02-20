@@ -1,10 +1,12 @@
 import React from 'react';
 import './Card.css';
 import { useNavigate } from 'react-router-dom';
-export function Card({ children, hover = false, className = '' }) {
-  const navigate=useNavigate()
+export function Card({ children, hover = false, className = '', info='' }) {
+
+  const navigate=  useNavigate();
+  
   return (
-    <div onClick={()=> alert("ok")} className={`card${hover ? ' card-hover' : ''} ${className}`}>
+    <div {...(info ? { onClick: () => { navigate(`/Info/${info}`); window.scrollTo(0, 0); } } : {})} className={`card${hover ? ' card-hover' : ''} ${className}`}>
       {children}
     </div>
   );

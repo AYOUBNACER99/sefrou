@@ -4,7 +4,7 @@ import { useApp } from '../context/AppContext';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 import { Modal } from '../components/Modal';
-import { LogOut, Plus, Edit, Trash2, Image, FileText, Settings } from 'lucide-react';
+import { LogOut, Plus, Edit, Trash2, Image, FileText, Settings, Upload, RefreshCw } from 'lucide-react';
 import './AdminDashboard.css';
 
 export function AdminDashboard() {
@@ -21,23 +21,35 @@ export function AdminDashboard() {
     addArticle,
     updateArticle,
     deleteArticle,
-    updateSiteContent
+    updateSiteContent,
+    loading,
+    error,
+    refreshData
   } = useApp();
 
   const [activeTab, setActiveTab] = useState('gallery');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [formError, setFormError] = useState('');
 
   // Gallery form state
-  const [galleryForm, setGalleryForm] = useState({ url: '', title: '', description: '' });
+  const [galleryForm, setGalleryForm] = useState({ 
+    title: '', 
+    description: '',
+    image: null,
+    imagePreview: '' 
+  });
 
   // Article form state
   const [articleForm, setArticleForm] = useState({
     title: '',
     summary: '',
-    content: '',
-    image: '',
-    author: 'Visit Sefrou Team'
+    description: '',
+    category: '',
+    author: 'Visit Sefrou Team',
+    image: null,
+    imagePreview: ''
   });
 
   // Content form state
@@ -58,13 +70,74 @@ export function AdminDashboard() {
     navigate('/');
   };
 
+  // File change handlers
+  const handleGalleryFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        setFormError('Please select an image file');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        setFormError('Image size should be less than 5MB');
+        return;
+      }
+
+      setFormError('');
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setGalleryForm({
+          ...galleryForm,
+          image: file,
+          imagePreview: reader.result
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleArticleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        setFormError('Please select an image file');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        setFormError('Image size should be less than 5MB');
+        return;
+      }
+
+      setFormError('');
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setArticleForm({
+          ...articleForm,
+          image: file,
+          imagePreview: reader.result
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const openGalleryModal = (image) => {
     if (image) {
       setEditingItem(image);
-      setGalleryForm({ url: image.url, title: image.title, description: image.description });
+      setGalleryForm({ 
+        title: image.title, 
+        description: image.description,
+        image: null,
+        imagePreview: image.url 
+      });
     } else {
       setEditingItem(null);
-      setGalleryForm({ url: '', title: '', description: '' });
+      setGalleryForm({ 
+        title: '', 
+        description: '',
+        image: null,
+        imagePreview: '' 
+      });
     }
     setIsModalOpen(true);
   };
@@ -75,43 +148,121 @@ export function AdminDashboard() {
       setArticleForm({
         title: article.title,
         summary: article.summary,
-        content: article.content,
-        image: article.image,
-        author: article.author
+        description: article.description,
+        category: article.category,
+        author: article.author,
+        image: null,
+        imagePreview: article.image || ''
       });
     } else {
       setEditingItem(null);
       setArticleForm({
         title: '',
         summary: '',
-        content: '',
-        image: '',
-        author: 'Visit Sefrou Team'
+        description: '',
+        category: '',
+        author: 'Visit Sefrou Team',
+        image: null,
+        imagePreview: ''
       });
     }
     setIsModalOpen(true);
   };
 
-  const handleGallerySubmit = () => {
-    if (editingItem) {
-      updateGalleryImage(editingItem.id, galleryForm);
-    } else {
-      addGalleryImage(galleryForm);
+  const handleGallerySubmit = async () => {
+    if (!galleryForm.image && !editingItem) {
+      setFormError('Please select an image');
+      return;
     }
-    setIsModalOpen(false);
+
+    if (!galleryForm.title || !galleryForm.description) {
+      setFormError('Please fill in all fields');
+      return;
+    }
+
+    setUploading(true);
+    setFormError('');
+
+    try {
+      if (editingItem) {
+        // For gallery edit, just update locally
+        updateGalleryImage(editingItem.id, {
+          title: galleryForm.title,
+          description: galleryForm.description,
+          url: galleryForm.imagePreview
+        });
+      } else {
+        const formData = new FormData();
+        formData.append('title', galleryForm.title);
+        formData.append('description', galleryForm.description);
+        formData.append('image', galleryForm.image);
+        
+        await addGalleryImage(formData);
+      }
+      
+      setIsModalOpen(false);
+    } catch (error) {
+      setFormError(error.message || 'Error uploading image');
+    } finally {
+      setUploading(false);
+    }
   };
 
-  const handleArticleSubmit = () => {
-    const articleData = {
-      ...articleForm,
-      date: editingItem ? editingItem.date : new Date().toISOString().split('T')[0]
-    };
-    if (editingItem) {
-      updateArticle(editingItem.id, articleData);
-    } else {
-      addArticle(articleData);
+  const handleArticleSubmit = async () => {
+    if (!articleForm.title || !articleForm.summary || !articleForm.description || 
+        !articleForm.category || !articleForm.author) {
+      setFormError('Please fill in all fields');
+      return;
     }
-    setIsModalOpen(false);
+
+    setUploading(true);
+    setFormError('');
+
+    try {
+      const formData = new FormData();
+      formData.append('title', articleForm.title);
+      formData.append('summary', articleForm.summary);
+      formData.append('description', articleForm.description);
+      formData.append('category', articleForm.category);
+      formData.append('author', articleForm.author);
+      formData.append('date', editingItem ? editingItem.date : new Date().toISOString().split('T')[0]);
+      
+      if (articleForm.image) {
+        formData.append('image', articleForm.image);
+      }
+
+      if (editingItem) {
+        await updateArticle(editingItem.id, formData);
+      } else {
+        await addArticle(formData);
+      }
+      
+      setIsModalOpen(false);
+    } catch (error) {
+      setFormError(error.message || 'Error saving article');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDeleteArticle = async (id) => {
+    if (window.confirm('Are you sure you want to delete this article?')) {
+      try {
+        await deleteArticle(id);
+      } catch (error) {
+        alert('Error deleting article: ' + error.message);
+      }
+    }
+  };
+
+  const handleDeleteGallery = async (id) => {
+    if (window.confirm('Are you sure you want to delete this image?')) {
+      try {
+        await deleteGalleryImage(id);
+      } catch (error) {
+        alert('Error deleting image: ' + error.message);
+      }
+    }
   };
 
   const handleContentSubmit = () => {
@@ -119,15 +270,34 @@ export function AdminDashboard() {
     alert('Content updated successfully!');
   };
 
+  if (loading) {
+    return (
+      <div className="admin-dashboard">
+        <div className="loading-container">
+          <div className="spinner"></div>
+          <p>Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="admin-dashboard">
       <div className="dashboard-header">
         <div className="container">
           <div className="dashboard-header-content">
-            <h1>Admin Dashboard</h1>
-            <Button variant="outline" onClick={handleLogout}>
-              <LogOut size={18} /> Logout
-            </Button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <h1>Admin Dashboard</h1>
+              {error && <span className="error-badge">{error}</span>}
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <Button variant="outline" onClick={refreshData}>
+                <RefreshCw size={18} /> Refresh
+              </Button>
+              <Button variant="outline" onClick={handleLogout}>
+                <LogOut size={18} /> Logout
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -175,7 +345,7 @@ export function AdminDashboard() {
                       <button onClick={() => openGalleryModal(image)}>
                         <Edit size={16} /> Edit
                       </button>
-                      <button onClick={() => deleteGalleryImage(image.id)} className="danger">
+                      <button onClick={() => handleDeleteGallery(image.id)} className="danger">
                         <Trash2 size={16} /> Delete
                       </button>
                     </div>
@@ -201,7 +371,8 @@ export function AdminDashboard() {
                 <div key={article.id} className="dashboard-list-item">
                   <div className="dashboard-list-content">
                     <h3>{article.title}</h3>
-                    <p>{article.summary}</p>
+                    <p><strong>Category:</strong> {article.category}</p>
+                    <p><strong>Summary:</strong> {article.summary}</p>
                     <span className="dashboard-list-meta">
                       {new Date(article.date).toLocaleDateString()} • {article.author}
                     </span>
@@ -210,7 +381,7 @@ export function AdminDashboard() {
                     <button onClick={() => openArticleModal(article)}>
                       <Edit size={16} /> Edit
                     </button>
-                    <button onClick={() => deleteArticle(article.id)} className="danger">
+                    <button onClick={() => handleDeleteArticle(article.id)} className="danger">
                       <Trash2 size={16} /> Delete
                     </button>
                   </div>
@@ -229,7 +400,7 @@ export function AdminDashboard() {
               <h3>Hero Section</h3>
               <Input
                 label="Title"
-                value={contentForm.hero.title}
+                value={contentForm.hero?.title || ''}
                 onChange={(value) => setContentForm({
                   ...contentForm,
                   hero: { ...contentForm.hero, title: value }
@@ -237,7 +408,7 @@ export function AdminDashboard() {
               />
               <Input
                 label="Subtitle"
-                value={contentForm.hero.subtitle}
+                value={contentForm.hero?.subtitle || ''}
                 onChange={(value) => setContentForm({
                   ...contentForm,
                   hero: { ...contentForm.hero, subtitle: value }
@@ -246,7 +417,7 @@ export function AdminDashboard() {
               <Input
                 label="Description"
                 type="textarea"
-                value={contentForm.hero.description}
+                value={contentForm.hero?.description || ''}
                 onChange={(value) => setContentForm({
                   ...contentForm,
                   hero: { ...contentForm.hero, description: value }
@@ -256,7 +427,7 @@ export function AdminDashboard() {
               <h3>About Section</h3>
               <Input
                 label="Title"
-                value={contentForm.about.title}
+                value={contentForm.about?.title || ''}
                 onChange={(value) => setContentForm({
                   ...contentForm,
                   about: { ...contentForm.about, title: value }
@@ -265,7 +436,7 @@ export function AdminDashboard() {
               <Input
                 label="Content"
                 type="textarea"
-                value={contentForm.about.content}
+                value={contentForm.about?.content || ''}
                 onChange={(value) => setContentForm({
                   ...contentForm,
                   about: { ...contentForm.about, content: value }
@@ -276,7 +447,7 @@ export function AdminDashboard() {
               <h3>Discover Section</h3>
               <Input
                 label="Title"
-                value={contentForm.discover.title}
+                value={contentForm.discover?.title || ''}
                 onChange={(value) => setContentForm({
                   ...contentForm,
                   discover: { ...contentForm.discover, title: value }
@@ -285,7 +456,7 @@ export function AdminDashboard() {
               <Input
                 label="Content"
                 type="textarea"
-                value={contentForm.discover.content}
+                value={contentForm.discover?.content || ''}
                 onChange={(value) => setContentForm({
                   ...contentForm,
                   discover: { ...contentForm.discover, content: value }
@@ -309,13 +480,29 @@ export function AdminDashboard() {
           title={editingItem ? 'Edit Image' : 'Add Image'}
         >
           <div className="modal-form">
-            <Input
-              label="Image URL"
-              value={galleryForm.url}
-              onChange={(value) => setGalleryForm({ ...galleryForm, url: value })}
-              placeholder="https://example.com/image.jpg"
-              required
-            />
+            {formError && <div className="error-message">{formError}</div>}
+            
+            <div className="form-group">
+              <label>Image {!editingItem && '*'}</label>
+              <div className="file-input-container">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleGalleryFileChange}
+                  className="file-input"
+                  id="gallery-image"
+                />
+                <label htmlFor="gallery-image" className="file-input-label">
+                  <Upload size={18} /> Choose Image
+                </label>
+              </div>
+              {galleryForm.imagePreview && (
+                <div className="image-preview">
+                  <img src={galleryForm.imagePreview} alt="Preview" />
+                </div>
+              )}
+            </div>
+
             <Input
               label="Title"
               value={galleryForm.title}
@@ -329,8 +516,12 @@ export function AdminDashboard() {
               onChange={(value) => setGalleryForm({ ...galleryForm, description: value })}
               required
             />
-            <Button onClick={handleGallerySubmit} fullWidth>
-              {editingItem ? 'Update' : 'Add'} Image
+            <Button 
+              onClick={handleGallerySubmit} 
+              fullWidth 
+              disabled={uploading}
+            >
+              {uploading ? 'Uploading...' : (editingItem ? 'Update' : 'Add')} Image
             </Button>
           </div>
         </Modal>
@@ -343,7 +534,30 @@ export function AdminDashboard() {
           onClose={() => setIsModalOpen(false)}
           title={editingItem ? 'Edit Article' : 'Add Article'}
         >
-          <div className="modal-form">
+          <div className="modal-form2">
+            {formError && <div className="error-message">{formError}</div>}
+            
+            <div className="form-group">
+              <label>Image (Optional)</label>
+              <div className="file-input-container">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleArticleFileChange}
+                  className="file-input"
+                  id="article-image"
+                />
+                <label htmlFor="article-image" className="file-input-label">
+                  <Upload size={18} /> Choose Image
+                </label>
+              </div>
+              {articleForm.imagePreview && (
+                <div className="image-preview">
+                  <img src={articleForm.imagePreview} alt="Preview" />
+                </div>
+              )}
+            </div>
+
             <Input
               label="Title"
               value={articleForm.title}
@@ -359,17 +573,17 @@ export function AdminDashboard() {
               rows={3}
             />
             <Input
-              label="Content"
+              label="Description"
               type="textarea"
-              value={articleForm.content}
-              onChange={(value) => setArticleForm({ ...articleForm, content: value })}
+              value={articleForm.description}
+              onChange={(value) => setArticleForm({ ...articleForm, description: value })}
               required
               rows={6}
             />
             <Input
-              label="Image URL"
-              value={articleForm.image}
-              onChange={(value) => setArticleForm({ ...articleForm, image: value })}
+              label="Category"
+              value={articleForm.category}
+              onChange={(value) => setArticleForm({ ...articleForm, category: value })}
               required
             />
             <Input
@@ -378,8 +592,12 @@ export function AdminDashboard() {
               onChange={(value) => setArticleForm({ ...articleForm, author: value })}
               required
             />
-            <Button onClick={handleArticleSubmit} fullWidth>
-              {editingItem ? 'Update' : 'Create'} Article
+            <Button 
+              onClick={handleArticleSubmit} 
+              fullWidth
+              disabled={uploading}
+            >
+              {uploading ? 'Saving...' : (editingItem ? 'Update' : 'Create')} Article
             </Button>
           </div>
         </Modal>
